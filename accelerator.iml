@@ -86,5 +86,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.3.9.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:4.3.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.24" level="project" />
   </component>
 </module>

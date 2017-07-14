@@ -1,7 +1,11 @@
 package org.utopiavip.bean;
 
 import lombok.Data;
+import org.utopiavip.Camel;
 
+/**
+ * 数据库表字段
+ */
 @Data
 public class Column {
     private String columnName;
@@ -12,4 +16,8 @@ public class Column {
     private String dataType;
     private String columnKey;
     private boolean isPrimaryKey;
+
+    public String getCamelColumnName() {
+        return Camel.toCamel(this.getColumnName());
+    }
 }

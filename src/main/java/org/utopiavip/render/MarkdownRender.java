@@ -1,5 +1,8 @@
-package org.utopiavip;
+package org.utopiavip.render;
 
+import org.utopiavip.Camel;
+import org.utopiavip.Resource;
+import org.utopiavip.TypeMapper;
 import org.utopiavip.bean.Column;
 import org.utopiavip.bean.Table;
 

@@ -1,12 +1,15 @@
-package org.utopiavip;
+package org.utopiavip.render;
 
+import org.utopiavip.Camel;
+import org.utopiavip.Resource;
+import org.utopiavip.TypeMapper;
 import org.utopiavip.bean.Column;
 import org.utopiavip.bean.Table;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JavaRender implements Resource{
+public class JavaRender implements Resource {
 
     public static String render2JavaBean(Table table) {
         StringBuilder bean = new StringBuilder();

@@ -1,5 +1,7 @@
 package org.utopiavip;
 
+import org.utopiavip.bean.Table;
+
 public interface Resource {
 
     // 普通资源

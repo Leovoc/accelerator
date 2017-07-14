@@ -24,6 +24,13 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>hscfRepo</id>
+			<url>http://repo.hscf.com/repository/hscfRepo</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,6 +69,11 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.24</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hscf</groupId>
+			<artifactId>common</artifactId>
+			<version>RELEASE</version>
 		</dependency>
 	</dependencies>
 

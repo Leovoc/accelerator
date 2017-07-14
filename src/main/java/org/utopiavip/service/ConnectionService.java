@@ -10,6 +10,8 @@ import org.utopiavip.dao.DbDao;
 import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -17,19 +19,26 @@ public class ConnectionService {
 
     private static final Logger logger = LoggerFactory.getLogger(ConnectionService.class);
 
+    private static Map<String, Connection> coonPool = new HashMap<>();
+
     @Autowired
     private DbDao dbDao;
 
     public Connection getConnection(String name) {
-        Db db = dbDao.findByName(name);
-        if (db == null) {
-            throw new IllegalArgumentException("No db config found for name[" + name + "]");
-        }
-
-        Connection connection = null;
+        Connection connection = coonPool.get(name);
         try {
+            if (connection != null && !connection.isClosed() && connection.isValid(1000)) {
+                return connection;
+            }
+
+            Db db = dbDao.findByName(name);
+            if (db == null) {
+                throw new IllegalArgumentException("No db config found for name[" + name + "]");
+            }
+
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(db.getUrl(), db.getUsername(), db.getPassword());
+            coonPool.put(name, connection);
         } catch (Exception e) {
             logger.error("Get connection failed, name {}", name);
             logger.error("Stacktrace is ", e);

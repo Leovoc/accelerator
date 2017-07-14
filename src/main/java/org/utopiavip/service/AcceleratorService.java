@@ -31,6 +31,10 @@ public class AcceleratorService {
         table.setTableSchema(schema);
         table.setTableName(tableName);
         List<Column> columnList = new ArrayList<>();
+        int columnNameMaxLength = 0;
+        int columnTypeMaxLength = 0;
+        int columnLength = 0;
+        int columnTypeLength = 0;
 
         try {
             Column column = null;
@@ -48,13 +52,23 @@ public class AcceleratorService {
                     column.setPrimaryKey(true);
                     table.setPrimaryKeyUUID("varchar".equals(column.getDataType()));
                 }
+
+                columnLength = column.getCamelColumnName().length();
+                columnTypeLength = column.getColumnType().length();
+                if (columnLength > columnNameMaxLength) {
+                    columnNameMaxLength = columnLength;
+                }
+                if (columnTypeLength > columnTypeMaxLength) {
+                    columnTypeMaxLength = columnTypeLength;
+                }
                 columnList.add(column);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         table.setColumns(columnList);
-
+        table.setColumnNameMaxLength(columnNameMaxLength);
+        table.setColumnTypeMaxLength(columnTypeMaxLength);
         return table;
     }
 }

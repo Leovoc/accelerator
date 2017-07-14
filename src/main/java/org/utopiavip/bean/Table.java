@@ -15,6 +15,8 @@ public class Table {
     private String tableName;
     private String tableComment;
     private boolean isPrimaryKeyUUID;
+    private int columnNameMaxLength;
+    private int columnTypeMaxLength;
 
     private List<Column> columns;
 

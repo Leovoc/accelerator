@@ -15,7 +15,16 @@ import java.util.UUID;
 
 public class PostmanRender implements Resource{
 
-    public static String toPostMan(Table table) {
+    private PostmanRender() {}
+
+    private static final PostmanRender render = new PostmanRender();
+
+    public static PostmanRender getInstance() {
+        return render;
+    }
+
+    @Override
+    public String render(Table table) {
 
         PostmanCollection collection = new PostmanCollection();
         PostmanRequest request = new PostmanRequest();

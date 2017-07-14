@@ -8,8 +8,16 @@ import org.utopiavip.bean.Table;
 
 public class MarkdownRender implements Resource {
 
+    private MarkdownRender() {}
 
-    public static String render2Markdown(Table table) {
+    private static final MarkdownRender render = new MarkdownRender();
+
+    public static MarkdownRender getInstance() {
+        return render;
+    }
+
+    @Override
+    public String render(Table table) {
         StringBuilder md = new StringBuilder("[toc]").append(nl).append("-").append(nl);
 
         // 更新信息

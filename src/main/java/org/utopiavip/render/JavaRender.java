@@ -11,7 +11,16 @@ import java.util.Map;
 
 public class JavaRender implements Resource {
 
-    public static String render2JavaBean(Table table) {
+    private JavaRender() {}
+
+    private static final JavaRender render = new JavaRender();
+
+    public static JavaRender getInstance() {
+        return render;
+    }
+
+    @Override
+    public String render(Table table) {
         StringBuilder bean = new StringBuilder();
         // Import
         bean.append("import com.hand.hap.cloud.mybatis.annotation.ModifyAudit;").append(nl);
@@ -63,5 +72,4 @@ public class JavaRender implements Resource {
         bean.append("}").append(nl);
         return bean.toString();
     }
-
 }

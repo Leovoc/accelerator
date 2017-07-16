@@ -16,6 +16,7 @@ public class Column {
     private String dataType;
     private String columnKey;
     private boolean isPrimaryKey;
+    private String columnDefault;
 
     public String getCamelColumnName() {
         return Camel.toCamel(this.getColumnName());

@@ -9,6 +9,7 @@ public class SqlResource {
     public static final int C_COLUMN_COMMENT = 5;
     public static final int C_COLUMN_SEQ = 6;
     public static final int C_COLUMN_KEY = 7;
+    public static final int C_COLUMN_DEFAULT = 8;
 
     public static String queryColumn(String schema, String table) {
         return
@@ -19,7 +20,8 @@ public class SqlResource {
                 " 	data_type, " +
                 " 	column_comment, " +
                 "   ordinal_position, " +
-                "   column_key " +
+                "   column_key, " +
+                "   column_default " +
                 " from " +
                 " 	information_schema.columns " +
                 " where " +

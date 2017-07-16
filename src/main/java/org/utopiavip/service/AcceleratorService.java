@@ -47,7 +47,7 @@ public class AcceleratorService {
                 column.setNullable(!"NO".equals(resultSet.getString(SqlResource.C_IS_NULLABLE)));
                 column.setDataType(resultSet.getString(SqlResource.C_DATA_TYPE));
                 column.setColumnKey(resultSet.getString(SqlResource.C_COLUMN_KEY));
-
+                column.setColumnDefault(resultSet.getString(SqlResource.C_COLUMN_DEFAULT));
                 if ("PRI".equals(column.getColumnKey())) { // primary key
                     column.setPrimaryKey(true);
                     table.setPrimaryKeyUUID("varchar".equals(column.getDataType()));

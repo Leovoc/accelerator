@@ -34,6 +34,10 @@ public class LiquibaseRender implements Resource{
             columnType = rpad(column.getColumnType() + "',", columnTypeMaxLength + 4);
             sb.append(columnType);
 
+            if (column.isPrimaryKey() && !table.isPrimaryKeyUUID()) {
+                sb.append(" autoIncrement: true, ");
+            }
+
             sb.append("remarks: '").append(column.getColumnComment()).append("')");
             if (column.isPrimaryKey()) {
                 sb.append(" {").append(nl).append(blank16)

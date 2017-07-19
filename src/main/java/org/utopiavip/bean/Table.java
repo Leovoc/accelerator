@@ -17,6 +17,7 @@ public class Table {
     private boolean isPrimaryKeyUUID;
     private int columnNameMaxLength;
     private int columnTypeMaxLength;
+    private boolean isMultiTenant;
 
     private List<Column> columns;
 

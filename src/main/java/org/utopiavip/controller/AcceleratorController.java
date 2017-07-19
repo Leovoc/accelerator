@@ -2,13 +2,12 @@ package org.utopiavip.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.utopiavip.CommentService;
 import org.utopiavip.bean.Comment;
-import org.utopiavip.render.JavaRender;
+import org.utopiavip.render.JavaBeanRender;
 import org.utopiavip.render.LiquibaseRender;
 import org.utopiavip.render.MarkdownRender;
 import org.utopiavip.bean.Table;
@@ -28,7 +27,7 @@ public class AcceleratorController {
     @RequestMapping(value = "/toJava")
     public String toJava(@RequestParam String schema, @RequestParam String tableName) {
         Table table = acceleratorService.getTable(schema, tableName);
-        return JavaRender.getInstance().render(table);
+        return JavaBeanRender.getInstance().render(table);
     }
 
     @RequestMapping(value = "/toMarkdown")

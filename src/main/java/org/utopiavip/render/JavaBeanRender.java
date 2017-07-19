@@ -5,17 +5,16 @@ import org.utopiavip.Resource;
 import org.utopiavip.TypeMapper;
 import org.utopiavip.bean.Column;
 import org.utopiavip.bean.Table;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
-public class JavaRender implements Resource {
+public class JavaBeanRender implements Resource {
 
-    private JavaRender() {}
+    private JavaBeanRender() {}
 
-    private static final JavaRender render = new JavaRender();
+    private static final JavaBeanRender render = new JavaBeanRender();
 
-    public static JavaRender getInstance() {
+    public static JavaBeanRender getInstance() {
         return render;
     }
 
@@ -28,7 +27,19 @@ public class JavaRender implements Resource {
         bean.append("import lombok.AllArgsConstructor;").append(nl);
         bean.append("import lombok.Data;").append(nl);
         bean.append("import lombok.NoArgsConstructor;").append(nl);
-        bean.append("import com.hand.hap.cloud.mybatis.domain.AuditDomain;").append(nl);
+        if (table.isMultiTenant()) {
+            if (table.isPrimaryKeyUUID()) {
+                bean.append("import com.hand.hap.cloud.mybatis.domain.BaseDiDomain;").append(nl);
+            } else {
+                bean.append("import com.hand.hap.cloud.mybatis.domain.AuditDiDomain;").append(nl);
+            }
+        } else {
+            if (table.isPrimaryKeyUUID()) {
+                bean.append("import com.hand.hap.cloud.mybatis.domain.BaseDomain;").append(nl);
+            } else {
+                bean.append("import com.hand.hap.cloud.mybatis.domain.AuditDomain;").append(nl);
+            }
+        }
         bean.append("import javax.persistence.GeneratedValue;").append(nl);
         bean.append("import javax.persistence.Id;").append(nl).append(nl);
 
@@ -42,11 +53,20 @@ public class JavaRender implements Resource {
         // Class
         bean.append("public class").append(blank).append(Camel.toCamel(table.getTableName())).append(blank);
 
-        if (table.isPrimaryKeyUUID()) {
-            bean.append("extends BaseDomain");
+        if (table.isMultiTenant()) {
+            if (table.isPrimaryKeyUUID()) {
+                bean.append("extends BaseDiDomain");
+            } else {
+                bean.append("extends AuditDiDomain");
+            }
         } else {
-            bean.append("extends AuditDomain");
+            if (table.isPrimaryKeyUUID()) {
+                bean.append("extends BaseDomain");
+            } else {
+                bean.append("extends AuditDomain");
+            }
         }
+
         bean.append("{").append(nl2);
 
         // Attributes

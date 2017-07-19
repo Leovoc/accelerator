@@ -52,6 +52,9 @@ public class AcceleratorService {
                     column.setPrimaryKey(true);
                     table.setPrimaryKeyUUID("varchar".equals(column.getDataType()));
                 }
+                if ("ou_org_id".equals(column.getColumnName())) {
+                    table.setMultiTenant(true);
+                }
 
                 columnLength = column.getCamelColumnName().length();
                 columnTypeLength = column.getColumnType().length();

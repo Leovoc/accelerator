@@ -72,6 +72,10 @@ public class JavaBeanRender implements Resource {
         // Attributes
         List<Column> columns = table.getColumns();
         for (Column column : columns) {
+            if (table.isMultiTenant() && "ou_org_id".equals(column.getColumnName())) {
+                continue;
+            }
+
             if (column.isPrimaryKey()) {
                 bean.append(blank4).append("@Id").append(nl);
                 if (table.isPrimaryKeyUUID()) {
@@ -80,6 +84,7 @@ public class JavaBeanRender implements Resource {
                     bean.append(blank4).append("@GeneratedValue").append(nl);
                 }
             }
+
             bean.append(blank4)
                     .append(modifier)
                     .append(blank)

@@ -82,11 +82,15 @@ COMMENT ON COLUMN hr_organization.manage_position_id
                         .append(" MODIFY ").append(column.getColumnName()).append(" ")
                         .append(column.getColumnType()).append(" ");
 
-                if (!"null".equals(column.getColumnDefault()) && !StringUtil.isEmpty(column.getColumnDefault())) {
-                    if ("varchar".equals(column.getDataType())) {
-                        buf.append("DEFAULT '").append(column.getColumnDefault()).append("' ");
-                    } else {
-                        buf.append("DEFAULT ").append(column.getColumnDefault()).append(" ");
+                if (!column.isNullable()) {
+                    buf.append(" NOT NULL").append(" ");
+                } else {
+                    if (!"null".equals(column.getColumnDefault()) && !StringUtil.isEmpty(column.getColumnDefault())) {
+                        if ("varchar".equals(column.getDataType())) {
+                            buf.append("DEFAULT '").append(column.getColumnDefault()).append("' ");
+                        } else {
+                            buf.append("DEFAULT ").append(column.getColumnDefault()).append(" ");
+                        }
                     }
                 }
 

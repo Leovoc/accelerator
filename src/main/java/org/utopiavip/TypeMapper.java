@@ -20,7 +20,6 @@ public class TypeMapper {
         types.put("bigint", "Long");
         types.put("int", "Integer");
         types.put("decimal", "BigDecimal");
-        types.put("decimal", "BigDecimal");
         types.put("double", "Double");
         types.put("timestamp", "Timestamp");
         types.put("datetime", "Date");

@@ -23,6 +23,7 @@ public class TypeMapper {
         types.put("double", "Double");
         types.put("timestamp", "Timestamp");
         types.put("datetime", "Date");
+        types.put("date", "Date");
         types.put("bit", "Boolean");
         types.put("tinyint", "Boolean");
     }

@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.utopiavip.CommentService;
 import org.utopiavip.bean.Comment;
-import org.utopiavip.mock.Mock;
+import org.utopiavip.mock.MockService;
 import org.utopiavip.render.JavaBeanRender;
 import org.utopiavip.render.LiquibaseRender;
 import org.utopiavip.render.MarkdownRender;
 import org.utopiavip.bean.Table;
 import org.utopiavip.render.PostmanRender;
+import org.utopiavip.runner.MockDataLoader;
 import org.utopiavip.service.AcceleratorService;
 
 @RestController
@@ -25,7 +26,13 @@ public class AcceleratorController {
     private AcceleratorService acceleratorService;
 
     @Autowired
+    private MockService mockService;
+
+    @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private MockDataLoader mockDataLoader;
 
     @RequestMapping(value = "/toJava")
     public String toJava(@RequestParam String schema, @RequestParam String tableName) {
@@ -59,7 +66,13 @@ public class AcceleratorController {
     @RequestMapping(value = "/mock")
     public String mockData(@RequestParam String schema, @RequestParam String tableName, @RequestParam int length) {
         Table table = acceleratorService.getTable(schema, tableName);
-        JSONObject jsonObject = Mock.mockPageQuery(table, length);
+        JSONObject jsonObject = mockService.mockPageQuery(table, length);
         return JSON.toJSONString(jsonObject);
+    }
+
+    @RequestMapping(value = "/reloadMetadata")
+    public String mockData() {
+        mockDataLoader.loadMetadata();
+        return "ok";
     }
 }

@@ -44,6 +44,11 @@ public class LiquibaseRender implements Resource{
                         .append("constraints(primaryKey: true)").append(nl)
                         .append(blank12).append("}");
             }
+            if (!column.isNullable() && !column.isPrimaryKey()) {
+                sb.append(" {").append(nl).append(blank16)
+                        .append("constraints(nullable: false)").append(nl)
+                        .append(blank12).append("}");
+            }
             sb.append(nl);
         }
         sb.append(blank8).append("}").append(nl);

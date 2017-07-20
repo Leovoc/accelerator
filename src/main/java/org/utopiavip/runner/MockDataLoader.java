@@ -73,6 +73,16 @@ public class MockDataLoader implements CommandLineRunner{
     }
 
     /**
+     * 是否需要添加描述字段
+     * @param tableName
+     * @param columnName
+     * @return
+     */
+    public static boolean isNeedDescriptionColumn(String tableName, String columnName) {
+        return codeMetadatas.containsKey(tableName + "_" + columnName);
+    }
+
+    /**
      * 模拟特定表的特定字段数据
      * @param row
      * @param column

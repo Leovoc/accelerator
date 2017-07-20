@@ -5,6 +5,7 @@ import org.utopiavip.Resource;
 import org.utopiavip.TypeMapper;
 import org.utopiavip.bean.Column;
 import org.utopiavip.bean.Table;
+import org.utopiavip.runner.MockDataLoader;
 
 public class MarkdownRender implements Resource {
 
@@ -45,6 +46,13 @@ public class MarkdownRender implements Resource {
                     .append(TypeMapper.get(column.getDataType())).append(v)
                     .append(column.getColumnComment()).append(v)
                     .append(v).append(nl);
+            if (MockDataLoader.isNeedDescriptionColumn(table.getTableName(), column.getColumnName())) {
+                md.append(v).append(Camel.toCamel(column.getColumnName() + "Desc")).append(v)
+                        .append(column.isNullable() ? "N" : "Y").append(v)
+                        .append(TypeMapper.get(column.getDataType())).append(v)
+                        .append(column.getColumnComment()).append(v)
+                        .append(v).append(nl);
+            }
         }
 
         // Result

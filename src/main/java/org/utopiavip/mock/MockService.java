@@ -101,7 +101,7 @@ public class MockService {
 
         }
         // 金额字段
-        else if (amountColumnList.contains(columnName)) {
+        else if (amountColumnList.contains(dataType)) {
             if (columnName.contains("_rate")) {
                 row.put(camelColumnName, PublicMocker.mockRate());
             } else {
@@ -143,7 +143,7 @@ public class MockService {
             row.put(camelColumnName, PublicMocker.mockInt());
         }
         else {
-            row.put(camelColumnName, null);
+            row.put(camelColumnName, "");
         }
     }
 

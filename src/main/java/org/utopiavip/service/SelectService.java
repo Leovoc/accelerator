@@ -22,9 +22,9 @@ public class SelectService {
         int idx = 1;
         for (Column column : columns) {
             if (idx == length) {
-                sql.append(column.getColumnName()).append(",\n");
-            } else {
                 sql.append(column.getColumnName()).append("\n");
+            } else {
+                sql.append(column.getColumnName()).append(",\n");
             }
             idx++;
     }

@@ -13,6 +13,7 @@ import org.utopiavip.Entity.TableColumnMock;
 import org.utopiavip.bean.Column;
 import org.utopiavip.dao.ColumnMockDao;
 import org.utopiavip.dao.TableColumnMockDao;
+import org.utopiavip.util.CamelUtil;
 import org.utopiavip.util.RandomUtil;
 
 import java.util.Arrays;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MockDataLoader implements CommandLineRunner{
+public class MockDataLoader implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(MockDataLoader.class);
     private static final Map<String, JSONArray> codeMetadatas = new HashMap<>(); // 编码与描述 key,value模拟
@@ -74,6 +75,7 @@ public class MockDataLoader implements CommandLineRunner{
 
     /**
      * 是否需要添加描述字段
+     *
      * @param tableName
      * @param columnName
      * @return
@@ -84,6 +86,7 @@ public class MockDataLoader implements CommandLineRunner{
 
     /**
      * 模拟特定表的特定字段数据
+     *
      * @param row
      * @param column
      * @return
@@ -102,17 +105,18 @@ public class MockDataLoader implements CommandLineRunner{
 
     /**
      * 模拟特定字段数据
+     *
      * @param row
-     * @param column
+     * @param camelColumnName 字段名(驼峰命令法)
      * @return
      */
-    public boolean mockColumnData(JSONObject row, Column column) {
-        List<String> data = columnMetadatas.get(column.getColumnName());
+    public boolean mockColumnData(JSONObject row, String camelColumnName) {
+        List<String> data = columnMetadatas.get(CamelUtil.camel2Underline(camelColumnName));
         if (data == null || data.isEmpty()) {
             return false;
         }
 
-        row.put(column.getCamelColumnName(), data.get(RandomUtil.getRandom(data.size())));
+        row.put(camelColumnName, data.get(RandomUtil.getRandom(data.size())));
         return true;
     }
 

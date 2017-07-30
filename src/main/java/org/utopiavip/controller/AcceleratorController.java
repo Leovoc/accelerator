@@ -40,6 +40,7 @@ public class AcceleratorController {
 
     /**
      * 根据表生成Mybatis Domain(Java POJO)
+     *
      * @param schema
      * @param tableName
      * @return
@@ -52,6 +53,7 @@ public class AcceleratorController {
 
     /**
      * 根据表生成为知笔记的Markdown文档
+     *
      * @param schema
      * @param tableName
      * @return
@@ -64,6 +66,7 @@ public class AcceleratorController {
 
     /**
      * 根据表生成Postman Collection
+     *
      * @param schema
      * @param tableName
      * @return
@@ -76,6 +79,7 @@ public class AcceleratorController {
 
     /**
      * 根据表生成Liquibase Groovy 脚本
+     *
      * @param schema
      * @param tableName
      * @return
@@ -99,20 +103,35 @@ public class AcceleratorController {
 
     /**
      * 根据表自动生成Mock数据
+     *
      * @param schema
      * @param tableName
-     * @param length 记录条数
+     * @param length    记录条数
      * @return
      */
     @RequestMapping(value = "/mock")
-    public String mockData(@RequestParam String schema, @RequestParam String tableName, @RequestParam int length) {
+    public String mockDataFromTable(@RequestParam String schema, @RequestParam String tableName, @RequestParam int length) {
         Table table = acceleratorService.getTable(schema, tableName);
         JSONObject jsonObject = mockService.mockPageQuery(table, length);
         return JSON.toJSONString(jsonObject);
     }
 
     /**
+     * 根据Markdown文档自动生成Mock数据
+     *
+     * @param markdownContent
+     * @param length
+     * @return
+     */
+    @RequestMapping(value = "/mockByMarkdown")
+    public String mockDataFromMarkdown(@RequestParam String markdownContent, @RequestParam int length) {
+        JSONObject jsonObject = mockService.mockPageDataByMarkdown(markdownContent, length);
+        return JSON.toJSONString(jsonObject);
+    }
+
+    /**
      * 加载Mock的元数据到内存
+     *
      * @return
      */
     @RequestMapping(value = "/reloadMetadata")
@@ -123,6 +142,7 @@ public class AcceleratorController {
 
     /**
      * 根据表生成Select语句
+     *
      * @param schema
      * @param tableName
      * @return

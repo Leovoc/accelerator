@@ -1,13 +1,25 @@
 package org.utopiavip.render;
 
 import com.hscf.common.time.DateUtil;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.utopiavip.Resource;
 import org.utopiavip.bean.Column;
+import org.utopiavip.bean.Index;
 import org.utopiavip.bean.Table;
 
-public class LiquibaseRender implements Resource{
+import java.util.Iterator;
+import java.util.List;
 
-    private LiquibaseRender() {}
+public class LiquibaseRender implements Resource {
+
+    private static final String DEFAULT_INDEX_NAME = "PRIMARY";
+
+    private static final String DEFAULT_NON_UNIQUE = "1";
+    private static final String DEFAULT_NON_UNIQUE_VALUE = "true";
+
+
+    private LiquibaseRender() {
+    }
 
     private static final LiquibaseRender render = new LiquibaseRender();
 
@@ -16,9 +28,30 @@ public class LiquibaseRender implements Resource{
     }
 
     @Override
-    public String render(Table table) {
+    public String render(List<Table> tables) {
+
         StringBuilder sb = new StringBuilder();
-        sb.append(blank4).append("changeSet(author:'5641', id:'").append(DateUtil.date2Str(DateUtil.now())).append("') {").append(nl);
+
+        for (Table table : tables) {
+            sb.append(render(table));
+            sb.append(nl);
+        }
+        return sb.toString();
+    }
+
+
+    @Override
+    public String render(Table table) {
+
+        //睡眠一毫秒 避免ID 重复
+        try {
+            Thread.sleep(1L);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(blank4).append("changeSet(author:'system', id:'").append(DateUtil.now().getTime()).append("') {").append(nl);
         sb.append(blank8).append("createTable(tableName: \"").append(table.getTableName()).append("\") {").append(nl);
 
         String columnName = null;
@@ -51,7 +84,38 @@ public class LiquibaseRender implements Resource{
             }
             sb.append(nl);
         }
+
         sb.append(blank8).append("}").append(nl);
+
+        Iterator<String> keys = table.getIndexs().keySet().iterator();
+
+        while (keys.hasNext()) {
+            String key = keys.next();
+            if (!DEFAULT_INDEX_NAME.equals(key)) {
+                List<Index> indexs = table.getIndexs().get(key);
+                Index masterIndex = indexs.get(0);
+
+                sb.append(blank8).append("createIndex(indexName: \"").append(masterIndex.getIndexName())
+                        .append("\",tableName: \"").append(masterIndex.getTableName());
+
+                if (!DEFAULT_NON_UNIQUE.equals(masterIndex.getNonUnique())) {
+                    sb.append("\",unique: \"").append(DEFAULT_NON_UNIQUE_VALUE);
+                }
+
+                sb.append("\") {").append(nl);
+
+                for (Index index : indexs) {
+
+                    sb.append(blank12).append("column(name: '").append(index.getColumnName());
+
+                    sb.append("')");
+
+                    sb.append(nl);
+
+                }
+                sb.append(blank8).append("}").append(nl);
+            }
+        }
         sb.append(blank4).append("}").append(nl);
         return sb.toString();
     }
@@ -59,6 +123,7 @@ public class LiquibaseRender implements Resource{
 
     /**
      * 右补齐
+     *
      * @return
      */
     private static String rpad(String str, int length) {

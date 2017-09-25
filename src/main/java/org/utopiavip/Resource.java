@@ -2,6 +2,8 @@ package org.utopiavip;
 
 import org.utopiavip.bean.Table;
 
+import java.util.List;
+
 public interface Resource {
 
     // 普通资源
@@ -28,4 +30,6 @@ public interface Resource {
     String th5 = "|------------|-------------|------------|-------------|------------|"; // 5列表头
 
     String render(Table table);
+
+    String render(List<Table> tables);
 }

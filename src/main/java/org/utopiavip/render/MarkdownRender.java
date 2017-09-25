@@ -7,6 +7,8 @@ import org.utopiavip.bean.Column;
 import org.utopiavip.bean.Table;
 import org.utopiavip.runner.MockDataLoader;
 
+import java.util.List;
+
 public class MarkdownRender implements Resource {
 
     private MarkdownRender() {}
@@ -78,6 +80,11 @@ public class MarkdownRender implements Resource {
         appendCode(md, "开发人员补充");
 
         return md.toString();
+    }
+
+    @Override
+    public String render(List<Table> tables) {
+        return null;
     }
 
     /**

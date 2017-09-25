@@ -18,6 +18,4 @@ public class QueryService {
             throw new RuntimeException("ExecuteQuery failed", e);
         }
     }
-
-
 }

@@ -97,4 +97,9 @@ public class JavaBeanRender implements Resource {
         bean.append("}").append(nl);
         return bean.toString();
     }
+
+    @Override
+    public String render(List<Table> tables) {
+        return null;
+    }
 }

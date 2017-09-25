@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PostmanRender implements Resource{
+public class PostmanRender implements Resource {
 
     private PostmanRender() {}
 
@@ -66,6 +66,11 @@ public class PostmanRender implements Resource{
         request.setRawModeData(rawModeData.toJSONString());
         collection.getRequests().add(request);
         return JSON.toJSONString(collection);
+    }
+
+    @Override
+    public String render(List<Table> tables) {
+        return null;
     }
 
 }

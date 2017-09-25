@@ -19,6 +19,8 @@ import org.utopiavip.runner.MockDataLoader;
 import org.utopiavip.service.AcceleratorService;
 import org.utopiavip.service.SelectService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/accelerator")
 public class AcceleratorController {
@@ -89,6 +91,14 @@ public class AcceleratorController {
         Table table = acceleratorService.getTable(schema, tableName);
         return LiquibaseRender.getInstance().render(table);
     }
+
+
+    @RequestMapping(value = "/toLiquibaseGroovys")
+    public String toLiquibaseGroovys(@RequestParam String schema) {
+        List<Table> tables = acceleratorService.getTable(schema);
+        return LiquibaseRender.getInstance().render(tables);
+    }
+
 
     /**
      * 将PostgreSQL 备注转换为Mysql备注

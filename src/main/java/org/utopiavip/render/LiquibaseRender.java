@@ -1,8 +1,10 @@
 package org.utopiavip.render;
 
+import com.hscf.common.text.StringUtil;
 import com.hscf.common.time.DateUtil;
 import org.omg.PortableInterceptor.INACTIVE;
 import org.utopiavip.Resource;
+import org.utopiavip.TypeMapper;
 import org.utopiavip.bean.Column;
 import org.utopiavip.bean.Index;
 import org.utopiavip.bean.Table;
@@ -56,17 +58,24 @@ public class LiquibaseRender implements Resource {
 
         String columnName = null;
         String columnType = null;
+        String defaultValue = null;
         int columnNameMaxLength = table.getColumnNameMaxLength();
         int columnTypeMaxLength = table.getColumnTypeMaxLength();
         for (Column column : table.getColumns()) {
             sb.append(blank12).append("column(name: '");
-            columnName = rpad(column.getColumnName() + "',", columnNameMaxLength + 4);
-
+            columnName = rpad(column.getColumnName().toLowerCase() + "',", columnNameMaxLength + 4);
             sb.append(columnName);
+
             sb.append("type: '");
             columnType = rpad(column.getColumnType() + "',", columnTypeMaxLength + 4);
             sb.append(columnType);
 
+            if(!StringUtil.isEmpty(column.getColumnDefault())){
+                String defaultValueKey = TypeMapper.getLiquibaseValue(column.getColumnType().toLowerCase());
+                sb.append(defaultValueKey+": '");
+                defaultValue = rpad(column.getColumnDefault() + "',", columnTypeMaxLength + 4);
+                sb.append(defaultValue);
+            }
             if (column.isPrimaryKey() && !table.isPrimaryKeyUUID()) {
                 sb.append(" autoIncrement: true, ");
             }
@@ -95,7 +104,7 @@ public class LiquibaseRender implements Resource {
                 List<Index> indexs = table.getIndexs().get(key);
                 Index masterIndex = indexs.get(0);
 
-                sb.append(blank8).append("createIndex(indexName: \"").append(masterIndex.getIndexName())
+                sb.append(blank8).append("createIndex(indexName: \"").append(masterIndex.getIndexName().toUpperCase())
                         .append("\",tableName: \"").append(masterIndex.getTableName());
 
                 if (!DEFAULT_NON_UNIQUE.equals(masterIndex.getNonUnique())) {
@@ -106,7 +115,7 @@ public class LiquibaseRender implements Resource {
 
                 for (Index index : indexs) {
 
-                    sb.append(blank12).append("column(name: '").append(index.getColumnName());
+                    sb.append(blank12).append("column(name: '").append(index.getColumnName().toLowerCase());
 
                     sb.append("')");
 

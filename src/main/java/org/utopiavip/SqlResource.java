@@ -68,7 +68,8 @@ public class SqlResource {
                 "from" +
                 "   information_schema.tables " +
                 "where " +
-                "   table_schema = '"+schema+"'" ;
+                "   table_schema = '"+schema+"'" +
+                "and table_type = 'BASE TABLE' " ;
 
     }
 }

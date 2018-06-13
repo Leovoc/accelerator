@@ -84,7 +84,9 @@ public class AcceleratorService {
                 column.setNullable(!"NO".equals(resultColumnSet.getString(SqlResource.C_IS_NULLABLE)));
                 column.setDataType(resultColumnSet.getString(SqlResource.C_DATA_TYPE));
                 column.setColumnKey(resultColumnSet.getString(SqlResource.C_COLUMN_KEY));
-                column.setColumnDefault(resultColumnSet.getString(SqlResource.C_COLUMN_DEFAULT));
+                column.setColumnDefault(resultColumnSet.getString(SqlResource.C_COLUMN_DEFAULT) != null
+                        ? resultColumnSet.getString(SqlResource.C_COLUMN_DEFAULT).replace("b", "").replace("'", "").toString()
+                        : resultColumnSet.getString(SqlResource.C_COLUMN_DEFAULT));
                 if ("PRI".equals(column.getColumnKey())) { // primary key
                     column.setPrimaryKey(true);
                     table.setPrimaryKeyUUID("varchar".equals(column.getDataType()));
@@ -102,6 +104,7 @@ public class AcceleratorService {
                     columnTypeMaxLength = columnTypeLength;
                 }
                 columnList.add(column);
+                System.out.println("column ： ====  "+column);
             }
         } catch (SQLException e) {
             e.printStackTrace();

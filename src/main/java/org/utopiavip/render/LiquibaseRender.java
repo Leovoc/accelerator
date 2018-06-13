@@ -52,9 +52,9 @@ public class LiquibaseRender implements Resource {
             e.printStackTrace();
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(blank4).append("changeSet(author:'system', id:'").append(DateUtil.now().getTime()).append("') {").append(nl);
-        sb.append(blank8).append("createTable(tableName: \"").append(table.getTableName()).append("\") {").append(nl);
+        StringBuilder buf = new StringBuilder();
+        buf.append(blank4).append("changeSet(author:'system', id:'").append(DateUtil.now().getTime()).append("') {").append(nl);
+        buf.append(blank8).append("createTable(tableName: \"").append(table.getTableName()).append("\") {").append(nl);
 
         String columnName = null;
         String columnType = null;
@@ -62,39 +62,39 @@ public class LiquibaseRender implements Resource {
         int columnNameMaxLength = table.getColumnNameMaxLength();
         int columnTypeMaxLength = table.getColumnTypeMaxLength();
         for (Column column : table.getColumns()) {
-            sb.append(blank12).append("column(name: '");
+            buf.append(blank12).append("column(name: '");
             columnName = rpad(column.getColumnName().toLowerCase() + "',", columnNameMaxLength + 4);
-            sb.append(columnName);
+            buf.append(columnName);
 
-            sb.append("type: '");
+            buf.append("type: '");
             columnType = rpad(column.getColumnType() + "',", columnTypeMaxLength + 4);
-            sb.append(columnType);
+            buf.append(columnType);
 
             if(!StringUtil.isEmpty(column.getColumnDefault())){
                 String defaultValueKey = TypeMapper.getLiquibaseValue(column.getColumnType().toLowerCase());
-                sb.append(defaultValueKey+": '");
+                buf.append(defaultValueKey+": '");
                 defaultValue = rpad(column.getColumnDefault() + "',", columnTypeMaxLength + 4);
-                sb.append(defaultValue);
+                buf.append(defaultValue);
             }
             if (column.isPrimaryKey() && !table.isPrimaryKeyUUID()) {
-                sb.append(" autoIncrement: true, ");
+                buf.append(" autoIncrement: true, ");
             }
 
-            sb.append("remarks: '").append(column.getColumnComment()).append("')");
+            buf.append("remarks: '").append(column.getColumnComment()).append("')");
             if (column.isPrimaryKey()) {
-                sb.append(" {").append(nl).append(blank16)
+                buf.append(" {").append(nl).append(blank16)
                         .append("constraints(primaryKey: true)").append(nl)
                         .append(blank12).append("}");
             }
             if (!column.isNullable() && !column.isPrimaryKey()) {
-                sb.append(" {").append(nl).append(blank16)
+                buf.append(" {").append(nl).append(blank16)
                         .append("constraints(nullable: false)").append(nl)
                         .append(blank12).append("}");
             }
-            sb.append(nl);
+            buf.append(nl);
         }
 
-        sb.append(blank8).append("}").append(nl);
+        buf.append(blank8).append("}").append(nl);
 
         Iterator<String> keys = table.getIndexs().keySet().iterator();
 
@@ -104,29 +104,29 @@ public class LiquibaseRender implements Resource {
                 List<Index> indexs = table.getIndexs().get(key);
                 Index masterIndex = indexs.get(0);
 
-                sb.append(blank8).append("createIndex(indexName: \"").append(masterIndex.getIndexName().toUpperCase())
+                buf.append(blank8).append("createIndex(indexName: \"").append(masterIndex.getIndexName().toUpperCase())
                         .append("\",tableName: \"").append(masterIndex.getTableName());
 
                 if (!DEFAULT_NON_UNIQUE.equals(masterIndex.getNonUnique())) {
-                    sb.append("\",unique: \"").append(DEFAULT_NON_UNIQUE_VALUE);
+                    buf.append("\",unique: \"").append(DEFAULT_NON_UNIQUE_VALUE);
                 }
 
-                sb.append("\") {").append(nl);
+                buf.append("\") {").append(nl);
 
                 for (Index index : indexs) {
 
-                    sb.append(blank12).append("column(name: '").append(index.getColumnName().toLowerCase());
+                    buf.append(blank12).append("column(name: '").append(index.getColumnName().toLowerCase());
 
-                    sb.append("')");
+                    buf.append("')");
 
-                    sb.append(nl);
+                    buf.append(nl);
 
                 }
-                sb.append(blank8).append("}").append(nl);
+                buf.append(blank8).append("}").append(nl);
             }
         }
-        sb.append(blank4).append("}").append(nl);
-        return sb.toString();
+        buf.append(blank4).append("}").append(nl);
+        return buf.toString();
     }
 
 
